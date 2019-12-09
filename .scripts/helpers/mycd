@@ -1,0 +1,4 @@
+function mycd {
+	cd $1
+	echo $PWD
+}

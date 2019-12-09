@@ -1,0 +1,14 @@
+#!/bin/bash
+# Check for subdirectories
+for dir in * ; do
+	if [[ -d $dir ]]; then
+		cd "$dir"
+		aif2mp3
+		cd ..
+	fi
+done
+
+# Convert audio files
+for file in *.aif ; do
+	ffmpeg -i "$file" -f mp3 -acodec libmp3lame -ab 320000 -ar 44100 "${file%.aif}.mp3" ;
+done

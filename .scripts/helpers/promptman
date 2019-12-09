@@ -1,0 +1,41 @@
+#!/bin/bash
+PROMT_ORIG="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+
+###################
+###### ICONS ######
+###################
+
+LINUX_ICON=$'\uE271'
+VCS_GIT_ICON=$'\uE20E'
+
+
+###################
+##PROMPT SEGMENTS##
+###################
+
+PROMPT_HEADER_START="\[\033[s\033[0;0H\033[0;40m\033[K\033[1;32m$LINUX_ICON"
+PROMPT_HEADER_END="\033[0m\033[u\]"
+
+###################
+#### FUNCTIONS ####
+###################
+
+function __ib_change_prompt {
+    if [ $1 -eq 0 ]
+    then
+        PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+    elif [ $1 -eq 1 ]
+    then
+        PS1="$PROMPT_HEADER_START\t$PROMPT_HEADER_END<\u@\h \W>\$ "
+    elif [ $1 -eq 2 ]
+    then
+        PS1="$PROMPT_HEADER_START\t $VCS_GIT_ICON $(git branch --show-current)$PROMPT_HEADER_END<\u@\h \W>\$ "
+    fi
+}
+
+function __ib_load_env_prompt {
+    if [ -d $PWD/.git ]
+    then
+        __ib_change_prompt 2
+    fi
+}
